@@ -316,7 +316,7 @@ bool DrawEngineCommon::TestBoundingBox(const void *vdata, const void *inds, int 
 	}
 
 	// Note: near/far are not checked without clamp/clip enabled, so we skip those planes.
-	int totalPlanes = gstate.isDepthClampEnabled() ? 6 : 4;
+	int totalPlanes = gstate.isDepthClipEnabled() ? 6 : 4;
 	for (int plane = 0; plane < totalPlanes; plane++) {
 		int inside = 0;
 		int out = 0;

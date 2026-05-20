@@ -116,7 +116,7 @@ void GPUgstate::Reset() {
 
 	savedContextVersion = 1;
 
-	gstate_c.Dirty(DIRTY_CULL_PLANES);
+	gstate_c.Dirty(DIRTY_BBOX_CULL_PLANES);
 }
 
 void GPUgstate::Save(u32_le *ptr) {
@@ -248,7 +248,7 @@ void GPUgstate::Restore(const u32_le *ptr) {
 	if (gpu)
 		gpu->ResetMatrices();
 
-	gstate_c.Dirty(DIRTY_CULL_PLANES);
+	gstate_c.Dirty(DIRTY_BBOX_CULL_PLANES);
 }
 
 bool vertTypeIsSkinningEnabled(u32 vertType) {
@@ -359,7 +359,7 @@ void GPUStateCache::DoState(PointerWrap &p) {
 	}
 
 	if (p.GetMode() == PointerWrap::MODE_READ)
-		gstate_c.Dirty(DIRTY_CULL_PLANES);
+		gstate_c.Dirty(DIRTY_BBOX_CULL_PLANES);
 }
 
 static const char *const g_gpuUseFlagNames[32] = {

@@ -146,7 +146,7 @@ void DrawEngineCommon::DispatchSubmitImm(GEPrimitiveType prim, TransformedVertex
 	// Code checks this reg directly, not just the vtype ID.
 	if (!prevThrough) {
 		gstate.vertType |= GE_VTYPE_THROUGH;
-		gstate_c.Dirty(DIRTY_VERTEXSHADER_STATE | DIRTY_FRAGMENTSHADER_STATE | DIRTY_RASTER_STATE | DIRTY_VIEWPORTSCISSOR_STATE | DIRTY_CULLRANGE);
+		gstate_c.Dirty(DIRTY_VERTEXSHADER_STATE | DIRTY_FRAGMENTSHADER_STATE | DIRTY_RASTER_STATE | DIRTY_VIEWPORTSCISSOR_STATE);
 	}
 
 	int bytesRead;
@@ -159,7 +159,7 @@ void DrawEngineCommon::DispatchSubmitImm(GEPrimitiveType prim, TransformedVertex
 
 	if (!prevThrough) {
 		gstate.vertType &= ~GE_VTYPE_THROUGH;
-		gstate_c.Dirty(DIRTY_VERTEXSHADER_STATE | DIRTY_FRAGMENTSHADER_STATE | DIRTY_RASTER_STATE | DIRTY_VIEWPORTSCISSOR_STATE | DIRTY_CULLRANGE);
+		gstate_c.Dirty(DIRTY_VERTEXSHADER_STATE | DIRTY_FRAGMENTSHADER_STATE | DIRTY_RASTER_STATE | DIRTY_VIEWPORTSCISSOR_STATE);
 	}
 }
 
@@ -236,10 +236,10 @@ bool DrawEngineCommon::TestBoundingBox(const void *vdata, const void *inds, int 
 
 	// Due to world matrix updates per "thing", this isn't quite as effective as it could be if we did world transform
 	// in here as well. Though, it still does cut down on a lot of updates in Tekken 6.
-	if (gstate_c.IsDirty(DIRTY_CULL_PLANES)) {
+	if (gstate_c.IsDirty(DIRTY_BBOX_CULL_PLANES)) {
 		UpdatePlanes();
 		gpuStats.numPlaneUpdates++;
-		gstate_c.Clean(DIRTY_CULL_PLANES);
+		gstate_c.Clean(DIRTY_BBOX_CULL_PLANES);
 	}
 
 	// Try to skip NormalizeVertices if it's pure positions. No need to bother with a vertex decoder
@@ -370,10 +370,10 @@ bool DrawEngineCommon::TestBoundingBoxFast(const void *vdata, int vertexCount, c
 
 	// Due to world matrix updates per "thing", this isn't quite as effective as it could be if we did world transform
 	// in here as well. Though, it still does cut down on a lot of updates in Tekken 6.
-	if (gstate_c.IsDirty(DIRTY_CULL_PLANES)) {
+	if (gstate_c.IsDirty(DIRTY_BBOX_CULL_PLANES)) {
 		UpdatePlanes();
 		gpuStats.numPlaneUpdates++;
-		gstate_c.Clean(DIRTY_CULL_PLANES);
+		gstate_c.Clean(DIRTY_BBOX_CULL_PLANES);
 	}
 
 	// Also let's just bail if offsetOutsideEdge_ is set, instead of handling the cases.

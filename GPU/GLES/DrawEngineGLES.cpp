@@ -352,17 +352,6 @@ void DrawEngineGLES::Flush() {
 		params.allowClear = true;  // Clear in OpenGL respects scissor rects, so we'll use it.
 		params.allowSeparateAlphaClear = true;
 
-		// We need correct viewport values in gstate_c already.
-		if (gstate_c.IsDirty(DIRTY_VIEWPORTSCISSOR_STATE)) {
-			ConvertViewportAndScissor(
-				framebufferManager_->GetDisplayLayoutConfigCopy(),
-				framebufferManager_->UseBufferedRendering(),
-				framebufferManager_->GetRenderWidth(), framebufferManager_->GetRenderHeight(),
-				framebufferManager_->GetTargetBufferWidth(), framebufferManager_->GetTargetBufferHeight(),
-				vpAndScissor_);
-			UpdateCachedViewportState(vpAndScissor_);
-		}
-
 		int maxIndex = numDecodedVerts_;
 
 		// TODO: Split up into multiple draw calls for GLES 2.0 where you can't guarantee support for more than 0x10000 verts.
